@@ -52,7 +52,8 @@ if ([string]::IsNullOrEmpty($PythonExe)) {
         $PythonExe = $candidate
         break
       }
-    } catch {
+    }
+    catch {
       # Continue to next candidate
     }
   }
@@ -64,8 +65,9 @@ if ([string]::IsNullOrEmpty($PythonExe)) {
 
 # Verify Python is available
 try {
-  $pythonVersion = & $PythonExe -c 'import sys; print(".".join(map(str, sys.version_info[:2])))' 2>$null
-} catch {
+  $pythonVersion = & $PythonExe -c "import sys; print('.'.join(map(str, sys.version_info[:2])))" 2>$null
+}
+catch {
   Die "Failed to run Python executable: $PythonExe"
 }
 
@@ -74,8 +76,9 @@ Write-Host "Using python: $PythonExe (version $pythonVersion)" -ForegroundColor 
 # Check for pip
 try {
   & $PythonExe -m pip --version | Out-Null
-} catch {
-  Die "pip module not found or not working. Please install pip or ensure it's available via 'python -m pip'."
+}
+catch {
+  Die "pip module not found or not working. Please install pip or ensure it is available via 'python -m pip'."
 }
 
 Write-Host "pip is available" -ForegroundColor Green
@@ -84,22 +87,25 @@ Write-Host ""
 # Create virtual environment
 if (Test-Path $VenvDir) {
   Write-Host "Virtual environment already exists at $VenvDir. Skipping creation." -ForegroundColor Yellow
-} else {
+}
+else {
   Write-Host "Creating virtual environment at $VenvDir..."
   try {
     & $PythonExe -m venv $VenvDir
-    Write-Host "✓ Virtual environment created" -ForegroundColor Green
-  } catch {
+    Write-Host "Virtual environment created" -ForegroundColor Green
+  }
+  catch {
     Die "Failed to create virtual environment: $_"
   }
 }
 
 # Activate virtual environment
-$ActivateScript = Join-Path $VenvDir "Scripts" "Activate.ps1"
+$ActivateScript = "$VenvDir\Scripts\Activate.ps1"
 if (Test-Path $ActivateScript) {
   Write-Host "Activating virtual environment..."
   & $ActivateScript
-} else {
+}
+else {
   Die "Could not find Activate.ps1 in $VenvDir\Scripts"
 }
 
@@ -107,8 +113,9 @@ if (Test-Path $ActivateScript) {
 Write-Host "Upgrading pip..."
 try {
   & python -m pip install --upgrade pip --quiet
-  Write-Host "✓ pip upgraded" -ForegroundColor Green
-} catch {
+  Write-Host "pip upgraded" -ForegroundColor Green
+}
+catch {
   Die "Failed to upgrade pip: $_"
 }
 
@@ -119,23 +126,32 @@ if (Test-Path "requirements.txt") {
     & python -m pip install -r requirements.txt --quiet
     Write-Host "Installing the CLI package..."
     & python -m pip install . --quiet
-    Write-Host "✓ Requirements and package installed" -ForegroundColor Green
-  } catch {
+    Write-Host "Requirements and package installed" -ForegroundColor Green
+  }
+  catch {
     Die "Failed to install requirements or package: $_"
   }
-} else {
+}
+else {
   Write-Host "WARNING: requirements.txt not found" -ForegroundColor Yellow
 }
 
 # Create .env from example if missing
 if ((Test-Path ".env") -eq $false -and (Test-Path ".env.example")) {
   Write-Host "Creating .env from .env.example..."
-  Copy-Item ".env.example" ".env"
-  Write-Host "✓ .env created from .env.example" -ForegroundColor Green
-  Write-Host "  Edit .env to add your CLOUDFLARE_API_TOKEN and other values." -ForegroundColor Gray
-} elseif (Test-Path ".env") {
-  Write-Host "✓ .env already exists (not overwriting)" -ForegroundColor Green
-} else {
+  try {
+    Copy-Item ".env.example" ".env"
+    Write-Host ".env created from .env.example" -ForegroundColor Green
+    Write-Host "  Edit .env to add your CLOUDFLARE_API_TOKEN and other values." -ForegroundColor Gray
+  }
+  catch {
+    Die "Failed to create .env: $_"
+  }
+}
+elseif (Test-Path ".env") {
+  Write-Host ".env already exists (not overwriting)" -ForegroundColor Green
+}
+else {
   Write-Host "WARNING: .env.example not found" -ForegroundColor Yellow
 }
 
@@ -148,5 +164,4 @@ Write-Host ""
 Write-Host "To deactivate the virtual environment later:" -ForegroundColor Gray
 Write-Host "  deactivate" -ForegroundColor White
 Write-Host ""
-
 Write-Host "Done!" -ForegroundColor Green
