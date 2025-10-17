@@ -11,6 +11,21 @@ This README explains how to install, configure, and use the tool.
 Dependencies are listed in `requirements.txt` and can be installed with pip.
 
 ## Installation
+
+### Quick Install (Recommended)
+For a quick installation on Linux/macOS, run:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/necto-cms/cloudflare-cli/main/install.sh | bash
+```
+
+For Windows, download and run the PowerShell script:
+
+```powershell
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/necto-cms/cloudflare-cli/main/install.ps1 -OutFile install.ps1; .\install.ps1
+```
+
+### Manual Installation
 Open a PowerShell terminal in the project folder and run:
 
 ```powershell
@@ -76,15 +91,58 @@ Troubleshooting
 - ModuleNotFoundError for `InquirerPy` or other packages: run `pip install -r requirements.txt`.
 - If a request fails, the CLI prints the raw error response from Cloudflare (check `errors` in the printed JSON)
 
-Contributing / Improvements
-- Possible improvements: global Ctrl+C handling to treat interrupts as "back", better per-record-type prompts for MX/SRV records, and return structured choices (value/label) so code does not need to parse strings for zone IDs.
+## Contributing
 
-License
-- MIT-style (no license file provided). Use and modify as you like.
+We welcome contributions from developers of all skill levels! Whether you're a seasoned coder or just starting out, your ideas and efforts can help make this Cloudflare CLI tool even better. Join our community and let's build something awesome together!
 
----
+### How to Contribute
 
-If you'd like, I can also:
-- Add structured select values (so zone selection returns the zone id directly),
-- Implement global KeyboardInterrupt handling to treat Ctrl+C/Esc as a soft cancel,
-- Add unit/integration tests for the Cloudflare calls (requires a test token).
+1. **Fork the Repository**: Click the "Fork" button on GitHub to create your own copy of the project.
+
+2. **Clone Your Fork**: 
+   ```bash
+   git clone https://github.com/your-username/cloudflare-cli.git
+   cd cloudflare-cli
+   ```
+
+3. **Create a Branch**: 
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+4. **Make Changes**: Implement your feature or fix. Follow our coding standards (PEP 8 for Python, clear commit messages).
+
+5. **Test Your Changes**: Run the CLI and ensure everything works. Add tests if possible.
+
+6. **Commit and Push**:
+   ```bash
+   git add .
+   git commit -m "Add your descriptive commit message"
+   git push origin feature/your-feature-name
+   ```
+
+7. **Create a Pull Request**: Go to the original repository and submit a PR. Describe what you've done and why.
+
+### Ideas for Contributions
+
+- **Global KeyboardInterrupt Handling**: Add Ctrl+C/Esc support to gracefully exit prompts.
+- **Enhanced DNS Record Prompts**: Better input validation for MX, SRV, and other record types.
+- **Structured Zone Selection**: Return zone IDs directly instead of parsing strings.
+- **Unit and Integration Tests**: Add tests for API calls (requires test tokens).
+- **Documentation Improvements**: Expand README, add examples, or create tutorials.
+- **New Features**: Support for more Cloudflare APIs, batch operations, or export/import functionality.
+- **UI Enhancements**: Improve the CLI interface with colors, progress bars, or new menus.
+
+### Guidelines
+
+- Follow PEP 8 style guidelines for Python code.
+- Write clear, concise commit messages.
+- Ensure your changes don't break existing functionality.
+- Test on multiple Python versions (3.8+).
+- Update documentation for any new features.
+
+Got an idea? Open an issue first to discuss it! We're excited to collaborate with you.
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
