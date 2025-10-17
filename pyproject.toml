@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cloudflare-cli"
+version = "1.0.0"
+description = "Interactive CLI to manage Cloudflare zones and DNS records"
+authors = [
+    {name = "necto-cms", email = "necto@example.com"},
+]
+dependencies = [
+    "requests",
+    "python-dotenv",
+    "rich",
+    "InquirerPy",
+]
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+
+[project.scripts]
+cf = "cloudflare_cli.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["cloudflare_cli*"]

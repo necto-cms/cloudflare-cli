@@ -52,9 +52,9 @@ jobs:
         run: |
           pylint cloudflare_service.py --disable=all --enable=E,F || true
 
-      - name: Lint with pylint (cli.py)
+      - name: Lint with pylint (cf.py)
         run: |
-          pylint cli.py --disable=all --enable=E,F || true
+          pylint cf.py --disable=all --enable=E,F || true
 
       - name: Verify scripts are executable
         run: |

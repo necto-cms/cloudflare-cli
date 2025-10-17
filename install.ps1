@@ -117,9 +117,11 @@ if (Test-Path "requirements.txt") {
   Write-Host "Installing requirements from requirements.txt..."
   try {
     & python -m pip install -r requirements.txt --quiet
-    Write-Host "✓ Requirements installed" -ForegroundColor Green
+    Write-Host "Installing the CLI package..."
+    & python -m pip install . --quiet
+    Write-Host "✓ Requirements and package installed" -ForegroundColor Green
   } catch {
-    Die "Failed to install requirements: $_"
+    Die "Failed to install requirements or package: $_"
   }
 } else {
   Write-Host "WARNING: requirements.txt not found" -ForegroundColor Yellow
@@ -141,7 +143,7 @@ Write-Host ""
 Write-Host "=== Installation finished successfully! ===" -ForegroundColor Green
 Write-Host ""
 Write-Host "Quick start:" -ForegroundColor Cyan
-Write-Host "  python cli.py" -ForegroundColor White
+Write-Host "  cf" -ForegroundColor White
 Write-Host ""
 Write-Host "To deactivate the virtual environment later:" -ForegroundColor Gray
 Write-Host "  deactivate" -ForegroundColor White

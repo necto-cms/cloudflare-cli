@@ -66,6 +66,8 @@ python -m pip install --upgrade pip || die "Failed to upgrade pip"
 
 if [ -f requirements.txt ]; then
   python -m pip install -r requirements.txt || die "Failed to install requirements from requirements.txt"
+  echo "Installing the CLI package..."
+  python -m pip install . || die "Failed to install the CLI package"
 else
   echo "WARNING: requirements.txt not found, skipping pip install -r requirements.txt"
 fi
@@ -91,7 +93,7 @@ else
   echo "  # On Windows PowerShell:"
   echo "  .\\$VENV_DIR\\Scripts\\Activate.ps1"
 fi
-echo "  python cli.py"
+echo "  cf"
 echo ""
 echo "Environment variables (optional):"
 echo "  VENV_DIR=<path>       - Custom venv directory (default: .venv)"

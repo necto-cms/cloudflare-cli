@@ -41,10 +41,19 @@ pip install -r .\requirements.txt
 ```
 
 ## Configuration (environment variables)
-Create a `.env` file in the project root (or set real environment variables) with the following keys:
 
-- `CLOUDFLARE_API_BASE` - API base URL (default: `https://api.cloudflare.com/client/v4`)
-- `CLOUDFLARE_API_TOKEN` - API Token with scopes such as: `Zone.Zone`, `Zone.DNS` (read & edit). Prefer tokens scoped to specific accounts rather than global API keys.
+The CLI supports multiple ways to configure your Cloudflare API token, prioritized as follows:
+
+1. **Environment Variables** (recommended for global installation):
+   - Set `CLOUDFLARE_API_TOKEN` in your system environment.
+   - Optionally set `CLOUDFLARE_API_BASE` (defaults to `https://api.cloudflare.com/client/v4`).
+
+2. **Global Configuration File**:
+   - The CLI automatically saves your token to `~/.cloudflare-cli/config.json` when you first run it.
+   - This file is created if no token is found in environment variables.
+
+3. **Local .env File** (for development):
+   - Create a `.env` file in the project root (or set real environment variables) with the following keys:
 
 Example `.env`:
 
@@ -53,11 +62,19 @@ CLOUDFLARE_API_BASE=https://api.cloudflare.com/client/v4
 CLOUDFLARE_API_TOKEN=your_token_here
 ```
 
+**First-Time Setup**: If no token is configured, the CLI will prompt you to enter your Cloudflare API token on first run. You can get an API token from [Cloudflare Dashboard > Profile > API Tokens](https://dash.cloudflare.com/profile/api-tokens). Recommended scopes: `Zone.DNS` (read & edit), `Zone.Zone` (read & edit).
+
 ## Run
-Start the CLI from the project folder:
+After installation, you can run the CLI from anywhere:
+
+```bash
+cf
+```
+
+Or if you prefer the local script:
 
 ```powershell
-python .\cli.py
+python .\cf.py
 ```
 
 You will see a main menu with options to view zones, manage DNS records, add domains, edit settings, delete zones, and exit.

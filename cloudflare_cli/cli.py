@@ -7,7 +7,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich import box
-from cloudflare_service import (
+from .cloudflare_service import (
     list_domains,
     add_domain,
     edit_domain,
@@ -17,7 +17,26 @@ from cloudflare_service import (
     edit_dns_record,
     delete_dns_record,
     get_zone_info,
+    save_config,
+    API_TOKEN,
 )
+
+# Check for API token
+if not API_TOKEN:
+    console = Console()
+    console.print("[bold red]No Cloudflare API token found![/bold red]")
+    console.print("Please provide your Cloudflare API token.")
+    console.print("You can get one from: https://dash.cloudflare.com/profile/api-tokens")
+    console.print("The token will be saved globally for future use.")
+    
+    token = inquirer.text("Enter your API token:").execute()
+    if token.strip():
+        save_config(token.strip())
+        console.print("[green]Token saved successfully! Please restart the CLI.[/green]")
+        sys.exit(0)
+    else:
+        console.print("[red]No token provided. Exiting.[/red]")
+        sys.exit(1)
 
 console = Console()
 
@@ -303,8 +322,13 @@ def main_menu():
         os.system("cls" if os.name == "nt" else "clear")
 
 
-if __name__ == "__main__":
+def main():
+    """Entry point for the CLI."""
     os.system("cls" if os.name == "nt" else "clear")
     main_menu()
+
+
+if __name__ == "__main__":
+    main()
 
 

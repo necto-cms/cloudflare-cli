@@ -46,7 +46,7 @@ jobs:
             After installation:
             
             1. Edit `.env` with your Cloudflare API token
-            2. Run: `python cli.py`
+            2. Run: `python cf.py`
             
             See [README.md](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/README.md) for full documentation.
           draft: false
