@@ -1,0 +1,53 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            # Cloudflare Manager CLI Release
+            
+            ## Installation
+            
+            ### Linux / macOS (bash)
+            ```bash
+            curl -fsSL https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/install.sh | bash -s --
+            ```
+            
+            ### Windows (PowerShell)
+            ```powershell
+            # First set execution policy (may be required):
+            Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+            
+            # Run the installer:
+            Invoke-WebRequest -Uri "https://raw.githubusercontent.com/${{ github.repository }}/${{ github.ref_name }}/install.ps1" -OutFile install.ps1
+            .\install.ps1
+            ```
+            
+            ## Quick Start
+            
+            After installation:
+            
+            1. Edit `.env` with your Cloudflare API token
+            2. Run: `python cli.py`
+            
+            See [README.md](https://github.com/${{ github.repository }}/blob/${{ github.ref_name }}/README.md) for full documentation.
+          draft: false
+          prerelease: false
